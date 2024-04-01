@@ -13,6 +13,7 @@ public class switchTOCutScene : MonoBehaviour
     [SerializeField] private GameObject frog;
     [SerializeField] private Transform respawnPoint;
     [SerializeField] private UiTween ui;
+    [SerializeField] private AudioSource waves;
 
     // Start is called before the first frame update
     void Start()
@@ -56,6 +57,7 @@ public class switchTOCutScene : MonoBehaviour
         }
         frog.GetComponent<NavMeshAgent>().enabled = true;
         this.gameObject.SetActive(false);
+        waves.Play();
 
     }
 }

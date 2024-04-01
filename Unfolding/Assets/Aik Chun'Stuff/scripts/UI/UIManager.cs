@@ -66,10 +66,11 @@ public class UIManager : MonoBehaviour
     private IEnumerator playGame()
     {
         //turn off all main menu ui
-        camUI.SetActive(false);
-        gameplayCamera.SetActive(true);
+        //camUI.SetActive(false);
+        //gameplayCamera.SetActive(true);
+        tween.TweenCam();
         mainMenuUi.SetActive(false);
-        GameEventManager.isTouchPage = true;
+        //GameEventManager.isTouchPage = true;
 
         foreach(var page in pages)
         {
@@ -85,9 +86,12 @@ public class UIManager : MonoBehaviour
         tween.UnBlackenScreenTransition(UnBlackenscreenSpeed);
         page1Anim.Play("IClose",0);
 
+        camUI.SetActive(false);
+        gameplayCamera.SetActive(true);
+
         // turn on all gameplay related objects
         mainMenuCanvas.SetActive(false);
-        GameEventManager.isTouchPage = false;
+        //GameEventManager.isTouchPage = false;
 
         foreach (var item in gameplayObjects)
         {
