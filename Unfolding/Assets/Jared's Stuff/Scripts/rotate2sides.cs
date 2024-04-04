@@ -50,7 +50,7 @@ public class rotate2sides : MonoBehaviour
             }
             xVal = xVal - 180;
             targetAngle = Quaternion.Euler(-1 + xVal, rotY, rotZ);
-            rot = -2f;
+            rot = -6f;
             rotatable = false;
         }
     }
@@ -67,7 +67,7 @@ public class rotate2sides : MonoBehaviour
             }
             xVal = xVal + 180;
             targetAngle = Quaternion.Euler(1 + xVal, rotY, rotZ);
-            rot = 2f;
+            rot = 6f;
             rotatable = false;
         }
 
