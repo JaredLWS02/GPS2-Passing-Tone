@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class TangramTrigger : MonoBehaviour
 {
@@ -8,6 +9,9 @@ public class TangramTrigger : MonoBehaviour
     public List<GameObject> tangramPieces;
     public Transform respawnPoint;
     public GameObject cutsceenTrigger;
+    public NavMeshAgent player;
+    public Mesh fixedboat;
+    public GameObject boat;
 
 
     private bool puzzleComplete = false;
@@ -23,6 +27,7 @@ public class TangramTrigger : MonoBehaviour
 
             // Disable this trigger object
             gameObject.SetActive(false);
+            player.ResetPath();
 
             
         }
@@ -54,6 +59,7 @@ public class TangramTrigger : MonoBehaviour
             GameEventManager.isPuzzling = false;
             tangramCanvas.gameObject.SetActive(false);
             cutsceenTrigger.SetActive(true);
+            boat.GetComponent<MeshFilter>().mesh = fixedboat;
             Debug.Log("Tangram canvas disabled.");
         }
     

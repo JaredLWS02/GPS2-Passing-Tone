@@ -17,6 +17,7 @@ public class DialogueTrigger : MonoBehaviour
     private bool playerDetected;
     private bool dialogueInProgress;
     private NavMeshAgent playerNavMeshAgent; // Reference to the player's NavMeshAgent
+    public GameObject tangramPuzzle;
     //private Vector3 originalPlayerPosition; // To store the original position of the player
 
     private void Start()
@@ -112,6 +113,10 @@ public class DialogueTrigger : MonoBehaviour
 
     public void enablePlayer()
     {
+        if(tangramPuzzle != null)
+        {
+            tangramPuzzle.SetActive(true);
+        }
         playerDetected = false;
         dialogueScript.ToggleIndicator(playerDetected);
         //dialogueScript.EndDialogue();

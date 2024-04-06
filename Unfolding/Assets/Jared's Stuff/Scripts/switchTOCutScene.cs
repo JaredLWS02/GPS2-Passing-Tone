@@ -13,6 +13,7 @@ public class switchTOCutScene : MonoBehaviour
     [SerializeField] private GameObject frog;
     [SerializeField] private Transform respawnPoint;
     [SerializeField] private UiTween ui;
+    [SerializeField] private AudioSource waves;
 
     // Start is called before the first frame update
     void Start()
@@ -31,8 +32,6 @@ public class switchTOCutScene : MonoBehaviour
     {
         if(col.gameObject.tag == "Player")
         {
-            frog.GetComponent<NavMeshAgent>().enabled = false;
-            frog.transform.position = respawnPoint.position;
             StartCoroutine(transition());
         }
     }
@@ -41,9 +40,11 @@ public class switchTOCutScene : MonoBehaviour
     {
         NavMeshHit hit;
 
-        mainCam.SetActive(false);
         ui.BlackenScreenTransition();
         yield return new WaitForSecondsRealtime(0.5f);
+        frog.GetComponent<NavMeshAgent>().enabled = false;
+        frog.transform.position = respawnPoint.position;
+        mainCam.SetActive(false);
         ui.UnBlackenScreenTransition(0.3f);
         cutSceneCam.SetActive(true);
         cutScene.SetActive(true);
@@ -56,6 +57,7 @@ public class switchTOCutScene : MonoBehaviour
         }
         frog.GetComponent<NavMeshAgent>().enabled = true;
         this.gameObject.SetActive(false);
+        waves.Play();
 
     }
 }

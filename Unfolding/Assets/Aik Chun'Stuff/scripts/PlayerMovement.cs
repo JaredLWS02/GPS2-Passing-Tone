@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -30,8 +29,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float rayDistance;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private GameObject playerCamera;
-    [SerializeField] private float swipeDist;
+    [SerializeField] private List<AudioClip> walkingClip;
+    [SerializeField] private AudioSource walkingAudioSource;
 
+    private int counter;
 
     void Start()
     {
@@ -61,10 +62,11 @@ public class PlayerMovement : MonoBehaviour
         if (isRotate || GameEventManager.isTouchPage || GameEventManager.isPuzzling)
         {
             //if(GameEventManager.isTouchPage)
+            playerAnim.SetBool("ismoving", false);
             //{
-                //StopAllCoroutines();
-                playerAnim.ResetTrigger("isMoving");
-                playerAnim.ResetTrigger("Stop");
+            //StopAllCoroutines();
+            //playerAnim.ResetTrigger("isMoving");
+            //playerAnim.ResetTrigger("Stop");
             //}
             return;
         }
@@ -102,10 +104,11 @@ public class PlayerMovement : MonoBehaviour
                             {
                                 if (player.hasPath)
                                 {
-                                    playerAnim.ResetTrigger("isMoving");
-                                    playerAnim.ResetTrigger("Stop");
                                     StopCoroutine(Move());
                                     StopCoroutine(checkMove());
+                                    //playerAnim.SetBool("isMoving", false);
+                                    //playerAnim.ResetTrigger("isMoving");
+                                    //playerAnim.ResetTrigger("Stop");
                                     StartCoroutine(Move());
                                 }
                                 else
@@ -155,7 +158,7 @@ public class PlayerMovement : MonoBehaviour
 
                 if (!isChecking)
                 {
-                    playerAnim.SetTrigger("isMoving");
+                    playerAnim.SetBool("ismoving", true);
                     StartCoroutine(checkMove());
                 }
             }
@@ -169,12 +172,26 @@ public class PlayerMovement : MonoBehaviour
         isChecking = true;
         while (player.hasPath && player.velocity.magnitude > 0)
         {
+            //if (!walkingAudioSource.isPlaying)
+            //{
+            //    if (counter >= walkingClip.Count)
+            //    {
+            //        counter = 0;
+            //    }
+
+            //    walkingAudioSource.clip = walkingClip[counter];
+            //    walkingAudioSource.Play();
+            //    counter++;
+            //}
             yield return null;
         }
-        playerAnim.SetTrigger("Stop");
+        //playerAnim.SetTrigger("Stop");
+        playerAnim.SetBool("ismoving", false);
         targetMark.gameObject.SetActive(false);
         isChecking = false;
         isMoving = false;
+        walkingAudioSource.Stop();
+        counter = 0;
     }
 
     private void checkRotX()
@@ -232,53 +249,15 @@ public class PlayerMovement : MonoBehaviour
             }
         }
     }
-    //private IEnumerator visualizeMovement()
-    //{
-    //    yield return new WaitForSeconds(0.1f);
-    //    int i = 1;
-    //    //lr.positionCount = amtOfCorners;
-
-    //    int amtOfCorners = player.path.corners.Length;
-    //    points = player.path.corners.ToList();
-    //    while (i < amtOfCorners)
-    //    {
-    //        for (int j = 0; j < points.Count; j++)
-    //        {
-    //            lr.SetPosition(j, points[j]);
-    //        }
-    //        i++;
-    //    }
-    //}
-    //void checkForSlopes()
-    //{
-    //    if (points[0].y < points[1].y) // going up
-    //    {
-    //        Vector3 distance = points[1] - points[0];
-
-    //        //float length = distance.magnitude;
-
-
-    //        if(startpos.y < transform.position.y)
-    //        {
-    //            startpos = new Vector3(transform.position.x,transform.position.y / 2,transform.position.z);
-    //        }
-
-    //        //for(int i = 0; i < 2; i++)
-    //        //{
-    //            NavMesh.(1, startpos);
-    //        //}
-
-    //        lr.SetPositions(points.ToArray());
-
-    //    }
-    //    else if (points[0].y > points[1].y) // going down
-    //    {
-
-    //    }
-    //    else
-    //    {
-    //        lr.SetPositions(points.ToArray());
-    //    }
-
-    //}
+    
+    private void PlayWalking1()
+    {
+        if(counter >= walkingClip.Count)
+        {
+            counter = 0;
+        }
+        walkingAudioSource.clip = walkingClip[counter];
+        walkingAudioSource.Play();
+        counter++;
+    }
 }

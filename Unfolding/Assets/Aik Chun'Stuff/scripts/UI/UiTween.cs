@@ -11,6 +11,11 @@ public class UiTween : MonoBehaviour
     [SerializeField] private float camspeed;
     private Vector3 startpos;
 
+    [Header("PlayCam Ui")]
+    [SerializeField] private Vector3 endposition;
+    [SerializeField] private float speed;
+
+
     [Header("Main Menu Ui")]
     [SerializeField] private GameObject playButton;
     [SerializeField] private GameObject OptionButton;
@@ -89,6 +94,18 @@ public class UiTween : MonoBehaviour
     {
         LeanTween.moveLocalX(cam, startpos.x, camspeed);
     }
+
+
+
+    #region PlayTween
+
+    public void TweenCam()
+    {
+        LeanTween.move(cam, endposition, speed);
+        cam.GetComponent<Camera>().fieldOfView = 60;
+        LeanTween.rotateX(cam, 14.86f, speed);
+    }
+    #endregion
 
 
     #region mainMenuTween

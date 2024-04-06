@@ -177,6 +177,7 @@ public class SlidingPuzzleHandler : MonoBehaviour
     public void ISuck()
     {
         size = 3;
+        CreateGamePieces(0.01f);
         Shuffle();
     }
     public void DamnISuck()
