@@ -126,7 +126,7 @@ public class UiTween : MonoBehaviour
         //    QuitButton.SetActive(true);
         //}
 
-        LeanTween.moveLocalX(playButton, 251, buttonSpeed).setEase(MainMenutype).setOnComplete(moveOption);
+        LeanTween.moveLocalX(playButton, 249, buttonSpeed).setEase(MainMenutype).setOnComplete(moveOption);
     }
 
     private void moveOption()

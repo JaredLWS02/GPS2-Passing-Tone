@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 
 public class DragDrop : MonoBehaviour
@@ -14,7 +15,7 @@ public class DragDrop : MonoBehaviour
     public AudioSource pickUpSound;
     public AudioSource dropSound;
 
-    private Vector2 objectInitPos;
+    private Vector3 objectInitPos;
     private Quaternion objectInitRot;
     private bool isRotate = true;
 
@@ -60,7 +61,7 @@ public class DragDrop : MonoBehaviour
     public void DropObject()
     {
 
-        float Distance = Vector3.Distance(objectToDrag.transform.position, ObjectDragToPosition.transform.position);
+        float Distance = Vector3.Distance(objectToDrag.transform.localPosition, ObjectDragToPosition.transform.localPosition);
         if (Distance < Dropdistance && IsCorrectRotation())
         {
             LockObject();
@@ -88,7 +89,7 @@ public class DragDrop : MonoBehaviour
     {
         islocked = true;
         objectToDrag.transform.position = ObjectDragToPosition.transform.position;
-
+        gameObject.GetComponent<Image>().raycastTarget = false;
         // Play pick up sound
         if (pickUpSound != null)
         {

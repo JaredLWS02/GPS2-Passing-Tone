@@ -18,6 +18,17 @@ public class DialogueTrigger : MonoBehaviour
     private bool dialogueInProgress;
     private NavMeshAgent playerNavMeshAgent; // Reference to the player's NavMeshAgent
     public GameObject tangramPuzzle;
+
+    [Header("Tick to determine direction of npc and player when entering Dialogue")]
+
+    public bool playerFaceRight;
+    public bool NpcFaceRight;
+
+    public GameObject npc;
+    [Header("Assign it if there is a talk animation")]
+    public Animator npcTalkingAnim;
+    private Quaternion oriRotFrog;
+    private Quaternion oriRotNpc;
     //private Vector3 originalPlayerPosition; // To store the original position of the player
 
     private void Start()
@@ -85,6 +96,36 @@ public class DialogueTrigger : MonoBehaviour
 
             // Disable player collider
             playerCollider.enabled = false;
+
+            //store orignial rotation of player and npc to set it back later
+            oriRotFrog = playerObject.transform.rotation;
+            oriRotNpc = npc.transform.rotation;
+
+            //make player face right or left
+            if(playerFaceRight)
+            {
+                playerObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            else
+            {
+                playerObject.transform.rotation = Quaternion.Euler(0, -180, 0);
+            }
+
+            //make npc face right or left
+            if (NpcFaceRight)
+            {
+                npc.transform.rotation = Quaternion.Euler(0, 0, 0);
+            }
+            else
+            {
+                npc.transform.rotation = Quaternion.Euler(0, -180, 0);
+            }
+
+            //play taking animation if assigned
+            if (npcTalkingAnim != null)
+            {
+                npcTalkingAnim.Play("Idle to Talk");
+            }
         }
     }
     private void EndDialogue()
@@ -136,6 +177,16 @@ public class DialogueTrigger : MonoBehaviour
         playerObject.transform.position = respawnPoint.position;
 
         Debug.Log("Player respawned at respawn point: " + playerObject.transform.position);
+
+        //player back idle for npc
+        if (npcTalkingAnim != null)
+        {
+            npcTalkingAnim.Play("Idle");
+        }
+
+        //set original rotation for player and npx
+        playerObject.transform.rotation = oriRotFrog;
+        npc.transform.rotation = oriRotNpc;
     }
     //While detected if we interact start the dialogue
     /*private void Update()
