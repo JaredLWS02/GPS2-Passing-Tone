@@ -112,7 +112,7 @@ public class DialogueTrigger : MonoBehaviour
             }
 
             //make npc face right or left
-            if (NpcFaceRight)
+            if (NpcFaceRight && npc != null)
             {
                 npc.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
@@ -186,7 +186,10 @@ public class DialogueTrigger : MonoBehaviour
 
         //set original rotation for player and npx
         playerObject.transform.rotation = oriRotFrog;
-        npc.transform.rotation = oriRotNpc;
+        if(npc != null)
+        {
+            npc.transform.rotation = oriRotNpc;
+        }
     }
     //While detected if we interact start the dialogue
     /*private void Update()

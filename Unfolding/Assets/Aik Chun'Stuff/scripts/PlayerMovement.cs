@@ -33,7 +33,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private List<AudioClip> walkingClip;
     [SerializeField] private AudioSource walkingAudioSource;
     [SerializeField] private List<Transform> npc;
-
+    [SerializeField] private List<GameObject> Sprite;
 
     private int counter;
 
@@ -188,6 +188,7 @@ public class PlayerMovement : MonoBehaviour
             //    walkingAudioSource.Play();
             //    counter++;
             //}
+            SortSprite();
             yield return null;
         }
         //playerAnim.SetTrigger("Stop");
@@ -213,7 +214,6 @@ public class PlayerMovement : MonoBehaviour
                 gameObject.transform.rotation = Quaternion.Euler(0, gameObject.transform.localEulerAngles.y, 0);//keep facing left
 
             }
-                targetMark.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");
         }
         else if (playerposX < player.pathEndPosition.x) // if going right
         {
@@ -226,7 +226,6 @@ public class PlayerMovement : MonoBehaviour
                 gameObject.transform.rotation = Quaternion.Euler(0, gameObject.transform.localEulerAngles.y - 180, 0); // face right
 
             }
-                targetMark.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Frog");
         }
     }
 
@@ -298,7 +297,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else if (playerCamera.transform.localEulerAngles.y == 180.0f)
             {
-                if (hit.point.z >= npc.transform.position.z)
+                if (hit.point.z <= npc.transform.position.z)
                 {
                     targetMark.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");
                     break;
@@ -311,7 +310,7 @@ public class PlayerMovement : MonoBehaviour
             }
             else 
             {
-                if (hit.point.z <= npc.transform.position.z)
+                if (hit.point.z >= npc.transform.position.z)
                 {
                     targetMark.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");
                     break;
@@ -326,6 +325,97 @@ public class PlayerMovement : MonoBehaviour
     }
 
 
+    private void SortSprite()
+    {
+        foreach (var npc in npc)
+        {
+            if (!npc.gameObject.activeInHierarchy)
+            {
+                continue;
+            }
+
+            if (playerCamera.transform.localEulerAngles.y == 90.0f)
+            {
+                if (gameObject.transform.position.x >= npc.position.x)
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");//go behind
+                    }
+                    break;
+                }
+                else
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Frog");//go infront
+                    }
+                    break;
+                }
+            }
+            else if (playerCamera.transform.localEulerAngles.y == 270.0f)
+            {
+                if (gameObject.transform.position.x <= npc.position.x)
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");
+                    }
+                    break;
+                }
+                else
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Frog");
+                    }
+                    break;
+                }
+            }
+            else if (playerCamera.transform.localEulerAngles.y == 180.0f)
+            {
+                if (gameObject.transform.position.z <= npc.position.z)
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");
+                    }
+                    break;
+                }
+                else
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Frog");
+                    }
+                    break;
+                }
+
+            }
+            else
+            {
+                if (gameObject.transform.position.z >= npc.position.z)
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");
+                    }
+                    break;
+                }
+                else
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Frog");
+                    }
+                    break;
+                }
+            }
+
+
+
+        }
+    }
     private void PlayWalking1()
     {
         if(counter >= walkingClip.Count)
