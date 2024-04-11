@@ -126,17 +126,17 @@ public class UiTween : MonoBehaviour
         //    QuitButton.SetActive(true);
         //}
 
-        LeanTween.moveLocalX(playButton, 249, buttonSpeed).setEase(MainMenutype).setOnComplete(moveOption);
+        LeanTween.moveLocalX(playButton, 245, buttonSpeed).setEase(MainMenutype).setOnComplete(moveOption);
     }
 
     private void moveOption()
     {
-        LeanTween.moveLocalX(OptionButton, 262, buttonSpeed).setEase(MainMenutype).setOnComplete(moveQuit);
+        LeanTween.moveLocalX(OptionButton, 258, buttonSpeed).setEase(MainMenutype).setOnComplete(moveQuit);
     }
 
     private void moveQuit()
     {
-        LeanTween.moveLocalX(QuitButton, 241, buttonSpeed).setEase(MainMenutype);
+        LeanTween.moveLocalX(QuitButton, 237, buttonSpeed).setEase(MainMenutype);
 
     }
 
