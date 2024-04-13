@@ -9,7 +9,6 @@ public class triggerReSize : MonoBehaviour
     [SerializeField] private NavMeshAgent frogNavMesh;
     [SerializeField] private GameObject targetMark;
     [SerializeField] private Vector3 frogscale;
-    [SerializeField] private Camera mainGamePlayCam;
     [SerializeField] private CameraFollow camfollow;
 
     private void OnTriggerEnter(Collider other)

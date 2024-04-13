@@ -31,7 +31,11 @@ public class PageFlip : MonoBehaviour
 
     void Update()
     {
-        if(!GameEventManager.isPuzzling && MainGamePlayCamera.transform.localEulerAngles.y == 0 )
+        if (PauseMenu.GameIsPaused)
+        {
+            return;
+        }
+        if (!GameEventManager.isPuzzling && MainGamePlayCamera.transform.localEulerAngles.y == 0 )
         {
             if (DebuggingText != null)
                 DebuggingText.text = GameEventManager.selectedPage;

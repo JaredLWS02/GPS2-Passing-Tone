@@ -66,8 +66,8 @@ public class NavMeshGenerator : MonoBehaviour
     {
         nav.enabled = true;
         //yield return new WaitForSeconds(0.02f);
-        nav.BuildNavMesh();
-        //nav.UpdateNavMesh(nav.navMeshData);
+        //nav.BuildNavMesh();
+        nav.UpdateNavMesh(nav.navMeshData);
         yield return new WaitForSeconds(0.2f);
         player.enabled = true;
 

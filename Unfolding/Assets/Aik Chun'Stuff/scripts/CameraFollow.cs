@@ -20,7 +20,11 @@ public class CameraFollow : MonoBehaviour
 
     void LateUpdate()
     {
-        if(gameObject.transform.GetChild(0).gameObject.activeSelf)
+        if (PauseMenu.GameIsPaused)
+        {
+            return;
+        }
+        if (gameObject.transform.GetChild(0).gameObject.activeSelf)
         {
 
             if (GameEventManager.isTouchPage == false)

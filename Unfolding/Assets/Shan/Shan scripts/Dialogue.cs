@@ -40,7 +40,7 @@ public class Dialogue : MonoBehaviour
     {
         
         ToggleWindow(false);
-        ToggleIndicator(false);
+        ToggleIndicator(true);
         
     }
 
@@ -113,7 +113,12 @@ public class Dialogue : MonoBehaviour
 
     IEnumerator Writing()//writing logic  //
     {
-        yield return new WaitForSecondsRealtime(writingSpeed);
+        while(PauseMenu.GameIsPaused)
+        {
+            yield return null;
+        }
+        yield return new WaitForSeconds(writingSpeed);
+
 
         string currentDialogue = dialogues[index];
         dialogueText.text += currentDialogue[charIndex]; //Write the character
@@ -129,7 +134,11 @@ public class Dialogue : MonoBehaviour
         if (charIndex <= currentDialogue.Length - 1)
         {
             //Wait x seconds
-            yield return new WaitForSecondsRealtime(writingSpeed);
+            while (PauseMenu.GameIsPaused)
+            {
+                yield return null;
+            }
+            yield return new WaitForSeconds(writingSpeed);
 
             //restart same process
             StartCoroutine(Writing());
@@ -143,6 +152,10 @@ public class Dialogue : MonoBehaviour
 
     void Update() //
     {
+        if (PauseMenu.GameIsPaused)
+        {
+            return;
+        }
         if (!started)
             return;
 
