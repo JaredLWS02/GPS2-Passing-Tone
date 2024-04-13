@@ -11,6 +11,11 @@ public class UiTween : MonoBehaviour
     [SerializeField] private float camspeed;
     private Vector3 startpos;
 
+    [Header("PlayCam Ui")]
+    [SerializeField] private Vector3 endposition;
+    [SerializeField] private float speed;
+
+
     [Header("Main Menu Ui")]
     [SerializeField] private GameObject playButton;
     [SerializeField] private GameObject OptionButton;
@@ -91,6 +96,18 @@ public class UiTween : MonoBehaviour
     }
 
 
+
+    #region PlayTween
+
+    public void TweenCam()
+    {
+        LeanTween.move(cam, endposition, speed);
+        cam.GetComponent<Camera>().fieldOfView = 60;
+        LeanTween.rotateX(cam, 14.86f, speed);
+    }
+    #endregion
+
+
     #region mainMenuTween
 
     public void TweenMainMenu()
@@ -109,17 +126,17 @@ public class UiTween : MonoBehaviour
         //    QuitButton.SetActive(true);
         //}
 
-        LeanTween.moveLocalX(playButton, 266, buttonSpeed).setEase(MainMenutype).setOnComplete(moveOption);
+        LeanTween.moveLocalX(playButton, 245, buttonSpeed).setEase(MainMenutype).setOnComplete(moveOption);
     }
 
     private void moveOption()
     {
-        LeanTween.moveLocalX(OptionButton, 280, buttonSpeed).setEase(MainMenutype).setOnComplete(moveQuit);
+        LeanTween.moveLocalX(OptionButton, 258, buttonSpeed).setEase(MainMenutype).setOnComplete(moveQuit);
     }
 
     private void moveQuit()
     {
-        LeanTween.moveLocalX(QuitButton, 255, buttonSpeed).setEase(MainMenutype);
+        LeanTween.moveLocalX(QuitButton, 237, buttonSpeed).setEase(MainMenutype);
 
     }
 

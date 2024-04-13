@@ -113,7 +113,7 @@ public class Dialogue : MonoBehaviour
 
     IEnumerator Writing()//writing logic  //
     {
-        yield return new WaitForSeconds(writingSpeed);
+        yield return new WaitForSecondsRealtime(writingSpeed);
 
         string currentDialogue = dialogues[index];
         dialogueText.text += currentDialogue[charIndex]; //Write the character
@@ -129,7 +129,7 @@ public class Dialogue : MonoBehaviour
         if (charIndex <= currentDialogue.Length - 1)
         {
             //Wait x seconds
-            yield return new WaitForSeconds(writingSpeed);
+            yield return new WaitForSecondsRealtime(writingSpeed);
 
             //restart same process
             StartCoroutine(Writing());
