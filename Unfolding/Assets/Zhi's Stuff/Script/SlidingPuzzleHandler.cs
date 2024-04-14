@@ -9,6 +9,7 @@ public class SlidingPuzzleHandler : MonoBehaviour
   [SerializeField] private Transform gameTransform;
   [SerializeField] private Transform piecePrefab;
   [SerializeField] private GameObject door;
+  [SerializeField] private AudioSource swipeSound;
     public bool win = false;
 
   private List<Transform> pieces;
@@ -88,6 +89,7 @@ public class SlidingPuzzleHandler : MonoBehaviour
     }
     public void OnClick(GameObject temp)
     {
+        swipeSound.Play();
         for (int i = 0; i < pieces.Count; i++)
         {
             if (pieces[i] == temp.transform)

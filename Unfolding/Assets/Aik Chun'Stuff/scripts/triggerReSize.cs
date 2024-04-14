@@ -10,6 +10,7 @@ public class triggerReSize : MonoBehaviour
     [SerializeField] private GameObject targetMark;
     [SerializeField] private Vector3 frogscale;
     [SerializeField] private CameraFollow camfollow;
+    [SerializeField] private CameraRotation camrot;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -20,6 +21,7 @@ public class triggerReSize : MonoBehaviour
             frog.transform.localScale = frogscale;
             frogNavMesh.speed = 7.0f;
             targetMark.transform.localScale = new Vector3(0.15f, 0.15f, 0.15f);
+            camrot.enabled = false;
         }
     }
 

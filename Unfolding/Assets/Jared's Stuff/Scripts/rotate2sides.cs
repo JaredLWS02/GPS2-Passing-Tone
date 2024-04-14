@@ -59,7 +59,8 @@ public class rotate2sides : MonoBehaviour
             rotatable = false;
             if (puzzleSound != null)
             {
-                puzzleSound.Play(); 
+                puzzleSound.Play();
+
             }
         }
     }

@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Animator page1Anim;
     [SerializeField] private Animator page2Anim;
+    [SerializeField] private AudioSource uiSound;
 
     [Header("Speed of Flipping Page (To Settings)")]
     [Range(0.0f, 5.0f)]
@@ -46,20 +47,24 @@ public class UIManager : MonoBehaviour
     //}
     public void StartGame()
     {
+        uiSound.Play();
         StartCoroutine(playGame());
     }
 
     public void ShowSettings()
     {
+        uiSound.Play();
         StartCoroutine(Settings());
     }
 
     public void BackMainMenu()
     {
+        uiSound.Play();
         StartCoroutine(Back());
     }
     public void Exitgame()
     {
+        uiSound.Play();
         Application.Quit();
     }
 

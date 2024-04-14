@@ -1030,4 +1030,12 @@ AnimationClip:
     flags: 0
   m_HasGenericRootTransform: 1
   m_HasMotionFloatCurves: 0
-  m_Events: []
+  m_Events:
+  - time: 0.9166667
+    functionName: playAudio
+    data: 
+    objectReferenceParameter: {fileID: 8300000, guid: ba64977a30b46bc4f8719f724e6f1788,
+      type: 3}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0

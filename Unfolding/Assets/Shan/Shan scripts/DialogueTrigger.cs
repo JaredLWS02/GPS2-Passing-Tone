@@ -29,6 +29,7 @@ public class DialogueTrigger : MonoBehaviour
     public Animator npcTalkingAnim;
     private Quaternion oriRotFrog;
     private Quaternion oriRotNpc;
+
     //private Vector3 originalPlayerPosition; // To store the original position of the player
 
     private void Start()
@@ -99,7 +100,10 @@ public class DialogueTrigger : MonoBehaviour
 
             //store orignial rotation of player and npc to set it back later
             oriRotFrog = playerObject.transform.rotation;
-            oriRotNpc = npc.transform.rotation;
+            if(npc != null)
+            {
+                oriRotNpc = npc.transform.rotation;
+            }
 
             //make player face right or left
             if(playerFaceRight)
@@ -116,7 +120,7 @@ public class DialogueTrigger : MonoBehaviour
             {
                 npc.transform.rotation = Quaternion.Euler(0, 0, 0);
             }
-            else
+            else if(npc != null)
             {
                 npc.transform.rotation = Quaternion.Euler(0, -180, 0);
             }
@@ -167,7 +171,7 @@ public class DialogueTrigger : MonoBehaviour
         npcCamera.gameObject.SetActive(false);
 
         // Re-enable NavMeshAgent
-        playerNavMeshAgent.enabled = true;
+         playerNavMeshAgent.enabled = true;
 
         // Re-enable player object and its collider
         playerObject.SetActive(true);
