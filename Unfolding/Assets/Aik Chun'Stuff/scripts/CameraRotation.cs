@@ -35,7 +35,11 @@ public class CameraRotation : MonoBehaviour
     }
     private void LateUpdate()
     {
-        if(!GameEventManager.isTouchObject && !GameEventManager.isTouchPage && !GameEventManager.isPuzzling)
+        if (PauseMenu.GameIsPaused)
+        {
+            return;
+        }
+        if (!GameEventManager.isTouchObject && !GameEventManager.isTouchPage && !GameEventManager.isPuzzling)
         {
             if (!isRotating && !pm.isMoving)
             {

@@ -18,10 +18,15 @@ public class rotOnDrag : MonoBehaviour
     private float xVal = 0;
     private Quaternion targetAngle;
     [SerializeField] private Behaviour rotS;
+    [SerializeField] private AudioSource puzzleSound;
 
     private void Update()
     {
-        if(rotAble == false)
+        if (PauseMenu.GameIsPaused)
+        {
+            return;
+        }
+        if (rotAble == false)
         {
             obj1.transform.Rotate(rotx, 0, 0);
             if (Mathf.Abs(Quaternion.Dot(obj1.transform.rotation, targetAngle)) > precision)
@@ -47,6 +52,10 @@ public class rotOnDrag : MonoBehaviour
             targetAngle = Quaternion.Euler(-1 + xVal, rotY, rotZ);
             rotx = -rotationXSpeed;
             rotAble = false;
+            if(puzzleSound != null)
+            {
+                puzzleSound.Play();
+            }
         }
     }
 
@@ -60,6 +69,11 @@ public class rotOnDrag : MonoBehaviour
             targetAngle = Quaternion.Euler(1 + xVal, rotY, rotZ);
             rotx = rotationXSpeed;
             rotAble = false;
+            if (puzzleSound != null)
+            {
+                puzzleSound.Play();
+            }
+
         }
     }
 

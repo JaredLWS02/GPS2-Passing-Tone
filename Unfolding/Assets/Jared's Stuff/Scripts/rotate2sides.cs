@@ -14,11 +14,16 @@ public class rotate2sides : MonoBehaviour
     [SerializeField] private float rotY, rotZ;
     [SerializeField] private NavMeshSurface mesh;
     [SerializeField] private NavMeshGenerator NavMeshGen;
+    [SerializeField] private AudioSource puzzleSound;
 
     public bool updateNavMesh;
 
     private void Update()
     {
+        if (PauseMenu.GameIsPaused)
+        {
+            return;
+        }
         if (rotatable == false)
         {
             objt.transform.Rotate(rot, 0, 0);
@@ -50,8 +55,13 @@ public class rotate2sides : MonoBehaviour
             }
             xVal = xVal - 180;
             targetAngle = Quaternion.Euler(-1 + xVal, rotY, rotZ);
-            rot = -2f;
+            rot = -6f;
             rotatable = false;
+            if (puzzleSound != null)
+            {
+                puzzleSound.Play();
+
+            }
         }
     }
 
@@ -67,8 +77,12 @@ public class rotate2sides : MonoBehaviour
             }
             xVal = xVal + 180;
             targetAngle = Quaternion.Euler(1 + xVal, rotY, rotZ);
-            rot = 2f;
+            rot = 6f;
             rotatable = false;
+            if (puzzleSound != null)
+            {
+                puzzleSound.Play();
+            }
         }
 
     }

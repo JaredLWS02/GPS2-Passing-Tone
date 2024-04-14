@@ -31,7 +31,8 @@ public class Dialogue : MonoBehaviour
     private bool started;
     //wait for next boolean
     private bool waitForNext;
-    
+
+    private bool inDialogue;
 
 
 
@@ -40,7 +41,7 @@ public class Dialogue : MonoBehaviour
     {
         
         ToggleWindow(false);
-        ToggleIndicator(false);
+        ToggleIndicator(true);
         
     }
 
@@ -86,15 +87,23 @@ public class Dialogue : MonoBehaviour
 
     private void GetDialogue(int i) //
     {
-        index = i; //start index at zero
-        charIndex = 0; //Reset the character index           
-        StartCoroutine(Writing()); //Start writing
+            index = i; //start index at zero
+        if(inDialogue)
+        {
+            StartCoroutine(SkipWriting());
+        }
+        else
+        {
+            charIndex = 0; //Reset the character index
+            StartCoroutine(Writing()); //Start writing
         dialogueText.text = string.Empty; //clear the dialogue component text
+        }
 
     }
 
     public void EndDialogue() //
     {
+        inDialogue = false;
         //started is disable
         started = false;
         //disable wait for next
@@ -113,6 +122,10 @@ public class Dialogue : MonoBehaviour
 
     IEnumerator Writing()//writing logic  //
     {
+        while(PauseMenu.GameIsPaused)
+        {
+            yield return null;
+        }
         yield return new WaitForSeconds(writingSpeed);
 
         string currentDialogue = dialogues[index];
@@ -129,20 +142,52 @@ public class Dialogue : MonoBehaviour
         if (charIndex <= currentDialogue.Length - 1)
         {
             //Wait x seconds
+            while (PauseMenu.GameIsPaused)
+            {
+                yield return null;
+            }
             yield return new WaitForSeconds(writingSpeed);
 
+            inDialogue = true;
             //restart same process
             StartCoroutine(Writing());
         }
         else
         {
+            inDialogue = false;
             waitForNext = true; //End this sentence and wait for the next one
         }
 
     }
 
+    IEnumerator SkipWriting()//writing logic  //
+    {
+        while (PauseMenu.GameIsPaused)
+        {
+            yield return null;
+        }
+        string currentDialogue = dialogues[index];
+        while(charIndex <= currentDialogue.Length - 1)
+        {
+            dialogueText.text += currentDialogue[charIndex]; //Write the character
+            charIndex++; //increase the character index 
+            if (dialogueSound != null)
+            {
+                AudioSource.PlayClipAtPoint(dialogueSound, transform.position);
+            }
+            yield return null;
+        }
+        inDialogue = false;
+        waitForNext = true;
+
+    }
+
     void Update() //
     {
+        if (PauseMenu.GameIsPaused)
+        {
+            return;
+        }
         if (!started)
             return;
 
@@ -151,7 +196,6 @@ public class Dialogue : MonoBehaviour
             waitForNext = false;
 
             index++;
-
             //Check if we are in the scope of dialogues list
             if (index < dialogues.Count)
             {
@@ -164,6 +208,11 @@ public class Dialogue : MonoBehaviour
                 ToggleIndicator(true);
                 EndDialogue();
             }
+        }
+
+        if(inDialogue && Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            GetDialogue(index);
         }
     }
 }

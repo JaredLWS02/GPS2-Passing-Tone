@@ -8,6 +8,8 @@ public class SlidingPuzzleHandler : MonoBehaviour
 {
   [SerializeField] private Transform gameTransform;
   [SerializeField] private Transform piecePrefab;
+  [SerializeField] private GameObject door;
+  [SerializeField] private AudioSource swipeSound;
     public bool win = false;
 
   private List<Transform> pieces;
@@ -79,8 +81,15 @@ public class SlidingPuzzleHandler : MonoBehaviour
             shuffling = true;
             StartCoroutine(WaitShuffle(0.5f));
         }
-    }public void OnClick(GameObject temp)
+
+        if(win)
+        {
+            door.SetActive(false);
+        }
+    }
+    public void OnClick(GameObject temp)
     {
+        swipeSound.Play();
         for (int i = 0; i < pieces.Count; i++)
         {
             if (pieces[i] == temp.transform)
@@ -129,12 +138,13 @@ public class SlidingPuzzleHandler : MonoBehaviour
             {
                 if (pieces[i].name != $"{i}")
                 {
-                    win = true;
+                    //win = true;
                     return false;
                 }
             }
             GameEventManager.isTouchObject = false;
             this.gameObject.SetActive(false);
+            win = true;
             return true;
         }
     }
@@ -176,8 +186,15 @@ public class SlidingPuzzleHandler : MonoBehaviour
 
     public void ISuck()
     {
-        size = 3;
+        foreach (var pieces in pieces)
+        {
+            pieces.gameObject.SetActive(false);
+        }
+        size = 4;
+        CreateGamePieces(0.01f);
         Shuffle();
+        win = true;
+
     }
     public void DamnISuck()
     {

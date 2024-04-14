@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.Burst.CompilerServices;
 using UnityEngine;
 using UnityEngine.AI;
-using UnityEngine.UIElements;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -30,8 +30,12 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float rayDistance;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private GameObject playerCamera;
-    [SerializeField] private float swipeDist;
+    [SerializeField] public List<AudioClip> walkingClip;
+    [SerializeField] private AudioSource walkingAudioSource;
+    [SerializeField] private List<Transform> npc;
+    [SerializeField] private List<GameObject> Sprite;
 
+    private int counter;
 
     void Start()
     {
@@ -58,13 +62,18 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(PauseMenu.GameIsPaused)
+        {
+            return;
+        }
         if (isRotate || GameEventManager.isTouchPage || GameEventManager.isPuzzling)
         {
             //if(GameEventManager.isTouchPage)
+            playerAnim.SetBool("ismoving", false);
             //{
-                //StopAllCoroutines();
-                playerAnim.ResetTrigger("isMoving");
-                playerAnim.ResetTrigger("Stop");
+            //StopAllCoroutines();
+            //playerAnim.ResetTrigger("isMoving");
+            //playerAnim.ResetTrigger("Stop");
             //}
             return;
         }
@@ -102,15 +111,17 @@ public class PlayerMovement : MonoBehaviour
                             {
                                 if (player.hasPath)
                                 {
-                                    playerAnim.ResetTrigger("isMoving");
-                                    playerAnim.ResetTrigger("Stop");
                                     StopCoroutine(Move());
                                     StopCoroutine(checkMove());
+                                    //playerAnim.SetBool("isMoving", false);
+                                    //playerAnim.ResetTrigger("isMoving");
+                                    //playerAnim.ResetTrigger("Stop");
                                     StartCoroutine(Move());
                                 }
                                 else
                                 {
                                     StartCoroutine(Move());
+
                                 }
                             }
                             //StartCoroutine(visualizeMovement());
@@ -140,6 +151,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 isMoving = true;
                 yield return new WaitForSeconds(0.05f);
+                sortFlowerMark();
                 targetMark.transform.position = player.pathEndPosition;
                 targetMark.gameObject.SetActive(true);
                 targetMarkAnim.Play("blooming animation",0,0);
@@ -155,7 +167,7 @@ public class PlayerMovement : MonoBehaviour
 
                 if (!isChecking)
                 {
-                    playerAnim.SetTrigger("isMoving");
+                    playerAnim.SetBool("ismoving", true);
                     StartCoroutine(checkMove());
                 }
             }
@@ -169,12 +181,27 @@ public class PlayerMovement : MonoBehaviour
         isChecking = true;
         while (player.hasPath && player.velocity.magnitude > 0)
         {
+            //if (!walkingAudioSource.isPlaying)
+            //{
+            //    if (counter >= walkingClip.Count)
+            //    {
+            //        counter = 0;
+            //    }
+
+            //    walkingAudioSource.clip = walkingClip[counter];
+            //    walkingAudioSource.Play();
+            //    counter++;
+            //}
+            SortSprite();
             yield return null;
         }
-        playerAnim.SetTrigger("Stop");
+        //playerAnim.SetTrigger("Stop");
+        playerAnim.SetBool("ismoving", false);
         targetMark.gameObject.SetActive(false);
         isChecking = false;
         isMoving = false;
+        walkingAudioSource.Stop();
+        counter = 0;
     }
 
     private void checkRotX()
@@ -189,6 +216,7 @@ public class PlayerMovement : MonoBehaviour
             else
             {
                 gameObject.transform.rotation = Quaternion.Euler(0, gameObject.transform.localEulerAngles.y, 0);//keep facing left
+
             }
         }
         else if (playerposX < player.pathEndPosition.x) // if going right
@@ -218,6 +246,7 @@ public class PlayerMovement : MonoBehaviour
             {
                 gameObject.transform.rotation = Quaternion.Euler(0, gameObject.transform.localEulerAngles.y, 0); // face left
             }
+
         }
         else if (playerposZ > player.pathEndPosition.z) // if going right
         {
@@ -230,55 +259,175 @@ public class PlayerMovement : MonoBehaviour
                 gameObject.transform.rotation = Quaternion.Euler(0, gameObject.transform.localEulerAngles.y, 0); // face right
 
             }
+
+        }  
+
+    }
+    
+    private void sortFlowerMark()
+    {
+        foreach (var npc in npc)
+        {
+            if (!npc.gameObject.activeInHierarchy)
+            {
+                continue;
+            }
+
+            if(playerCamera.transform.localEulerAngles.y == 90.0f)
+            {
+                if (hit.point.x >= npc.transform.position.x)
+                {
+                    targetMark.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");
+                    break;
+                }
+                else
+                {
+                    targetMark.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Frog");
+                    break;
+                }
+            }
+            else if (playerCamera.transform.localEulerAngles.y == 270.0f)
+            {
+                if (hit.point.x <= npc.transform.position.x)
+                {
+                    targetMark.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");
+                    break;
+                }
+                else
+                {
+                    targetMark.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Frog");
+                    break;
+                }
+            }
+            else if (playerCamera.transform.localEulerAngles.y == 180.0f)
+            {
+                if (hit.point.z <= npc.transform.position.z)
+                {
+                    targetMark.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");
+                    break;
+                }
+                else
+                {
+                    targetMark.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Frog");
+                    break;
+                }
+            }
+            else 
+            {
+                if (hit.point.z >= npc.transform.position.z)
+                {
+                    targetMark.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");
+                    break;
+                }
+                else
+                {
+                    targetMark.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Frog");
+                    break;
+                }
+            }
         }
     }
-    //private IEnumerator visualizeMovement()
-    //{
-    //    yield return new WaitForSeconds(0.1f);
-    //    int i = 1;
-    //    //lr.positionCount = amtOfCorners;
-
-    //    int amtOfCorners = player.path.corners.Length;
-    //    points = player.path.corners.ToList();
-    //    while (i < amtOfCorners)
-    //    {
-    //        for (int j = 0; j < points.Count; j++)
-    //        {
-    //            lr.SetPosition(j, points[j]);
-    //        }
-    //        i++;
-    //    }
-    //}
-    //void checkForSlopes()
-    //{
-    //    if (points[0].y < points[1].y) // going up
-    //    {
-    //        Vector3 distance = points[1] - points[0];
-
-    //        //float length = distance.magnitude;
 
 
-    //        if(startpos.y < transform.position.y)
-    //        {
-    //            startpos = new Vector3(transform.position.x,transform.position.y / 2,transform.position.z);
-    //        }
+    private void SortSprite()
+    {
+        foreach (var npc in npc)
+        {
+            if (!npc.gameObject.activeInHierarchy)
+            {
+                continue;
+            }
 
-    //        //for(int i = 0; i < 2; i++)
-    //        //{
-    //            NavMesh.(1, startpos);
-    //        //}
+            if (playerCamera.transform.localEulerAngles.y == 90.0f)
+            {
+                if (gameObject.transform.position.x >= npc.position.x)
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");//go behind
+                    }
+                    break;
+                }
+                else
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Frog");//go infront
+                    }
+                    break;
+                }
+            }
+            else if (playerCamera.transform.localEulerAngles.y == 270.0f)
+            {
+                if (gameObject.transform.position.x <= npc.position.x)
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");
+                    }
+                    break;
+                }
+                else
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Frog");
+                    }
+                    break;
+                }
+            }
+            else if (playerCamera.transform.localEulerAngles.y == 180.0f)
+            {
+                if (gameObject.transform.position.z <= npc.position.z)
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");
+                    }
+                    break;
+                }
+                else
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Frog");
+                    }
+                    break;
+                }
 
-    //        lr.SetPositions(points.ToArray());
+            }
+            else
+            {
+                if (gameObject.transform.position.z >= npc.position.z)
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Beaver");
+                    }
+                    break;
+                }
+                else
+                {
+                    foreach (var sprite in Sprite)
+                    {
+                        sprite.GetComponent<SpriteRenderer>().sortingLayerID = SortingLayer.NameToID("Frog");
+                    }
+                    break;
+                }
+            }
 
-    //    }
-    //    else if (points[0].y > points[1].y) // going down
-    //    {
 
-    //    }
-    //    else
-    //    {
-    //        lr.SetPositions(points.ToArray());
-    //    }
 
-    //}
+        }
+    }
+    private void PlayWalking1()
+    {
+        if(counter >= walkingClip.Count)
+        {
+            counter = 0;
+        }
+        walkingAudioSource.clip = walkingClip[counter];
+        walkingAudioSource.Play();
+        counter++;
+    }
 }

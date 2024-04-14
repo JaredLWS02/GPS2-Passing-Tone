@@ -13,6 +13,7 @@ public class UIManager : MonoBehaviour
 
     [SerializeField] private Animator page1Anim;
     [SerializeField] private Animator page2Anim;
+    [SerializeField] private AudioSource uiSound;
 
     [Header("Speed of Flipping Page (To Settings)")]
     [Range(0.0f, 5.0f)]
@@ -46,30 +47,35 @@ public class UIManager : MonoBehaviour
     //}
     public void StartGame()
     {
+        uiSound.Play();
         StartCoroutine(playGame());
     }
 
     public void ShowSettings()
     {
+        uiSound.Play();
         StartCoroutine(Settings());
     }
 
     public void BackMainMenu()
     {
+        uiSound.Play();
         StartCoroutine(Back());
     }
     public void Exitgame()
     {
+        uiSound.Play();
         Application.Quit();
     }
 
     private IEnumerator playGame()
     {
         //turn off all main menu ui
-        camUI.SetActive(false);
-        gameplayCamera.SetActive(true);
+        //camUI.SetActive(false);
+        //gameplayCamera.SetActive(true);
+        tween.TweenCam();
         mainMenuUi.SetActive(false);
-        GameEventManager.isTouchPage = true;
+        //GameEventManager.isTouchPage = true;
 
         foreach(var page in pages)
         {
@@ -85,9 +91,12 @@ public class UIManager : MonoBehaviour
         tween.UnBlackenScreenTransition(UnBlackenscreenSpeed);
         page1Anim.Play("IClose",0);
 
+        camUI.SetActive(false);
+        gameplayCamera.SetActive(true);
+
         // turn on all gameplay related objects
         mainMenuCanvas.SetActive(false);
-        GameEventManager.isTouchPage = false;
+        //GameEventManager.isTouchPage = false;
 
         foreach (var item in gameplayObjects)
         {
