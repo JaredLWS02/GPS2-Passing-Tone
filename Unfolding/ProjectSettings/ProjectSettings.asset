@@ -16,7 +16,7 @@ PlayerSettings:
   productName: UnFolding
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
-  m_SplashScreenBackgroundColor: {r: 0.13725491, g: 0.12156863, b: 0.1254902, a: 1}
+  m_SplashScreenBackgroundColor: {r: 0, g: 0, b: 0, a: 1}
   m_ShowUnitySplashScreen: 1
   m_ShowUnitySplashLogo: 1
   m_SplashScreenOverlayOpacity: 1
@@ -39,7 +39,9 @@ PlayerSettings:
     y: 0
     width: 1
     height: 1
-  m_SplashScreenLogos: []
+  m_SplashScreenLogos:
+  - logo: {fileID: 21300000, guid: e8bad665e3891a748941051e959b7030, type: 3}
+    duration: 3
   m_VirtualRealitySplashScreen: {fileID: 0}
   m_HolographicTrackingLossScreen: {fileID: 0}
   defaultScreenWidth: 1024
@@ -141,6 +143,9 @@ PlayerSettings:
   preloadedAssets:
   - {fileID: 0}
   - {fileID: 0}
+  - {fileID: -1420936979315364411, guid: e85de4fa3de9c9a4397ecf692152d7f9, type: 2}
+  - {fileID: 11400000, guid: 3632c932c6e951448abedeeb7647e327, type: 2}
+  - {fileID: 11400000, guid: 11683e145c3c37c42a13d8bf8b6695c3, type: 2}
   metroInputSource: 0
   wsaTransparentSwapchain: 0
   m_HolographicPauseOnTrackingLoss: 1
@@ -287,7 +292,7 @@ PlayerSettings:
   - m_BuildTarget: 
     m_Icons:
     - serializedVersion: 2
-      m_Icon: {fileID: 2800000, guid: 84b952edeaacf764185b101c2cb1dcaa, type: 3}
+      m_Icon: {fileID: 2800000, guid: a57fecb6f6397b840a88e8ceb0665525, type: 3}
       m_Width: 128
       m_Height: 128
       m_Kind: 0
