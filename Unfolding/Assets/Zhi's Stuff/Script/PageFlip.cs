@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.ProBuilder.MeshOperations;
 
 public class PageFlip : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class PageFlip : MonoBehaviour
     [SerializeField] private float sensitivity = 5000;
     [SerializeField] private Animator nextPageAnimator;
     [SerializeField] private Animator prevPageAnimator;
+    [SerializeField] private AudioSource pageflipSource;
 
     public static bool clicked;
     public static bool flipped;
@@ -23,6 +25,8 @@ public class PageFlip : MonoBehaviour
     private float frame;
     private Animator anim;
 
+    public bool canPlayAudio = false;
+
     private void Start()
     {
         anim = GetComponentInParent<Animator>();
@@ -31,7 +35,11 @@ public class PageFlip : MonoBehaviour
 
     void Update()
     {
-        if(!GameEventManager.isPuzzling && MainGamePlayCamera.transform.localEulerAngles.y == 0 )
+        if (PauseMenu.GameIsPaused)
+        {
+            return;
+        }
+        if (!GameEventManager.isPuzzling && MainGamePlayCamera.transform.localEulerAngles.y == 0 )
         {
             if (DebuggingText != null)
                 DebuggingText.text = GameEventManager.selectedPage;
@@ -70,6 +78,11 @@ public class PageFlip : MonoBehaviour
             GameEventManager.isTouchPage = false;
             clicked = false;
         }
+            if ((frame >= 0.001 && frame <= 0.999) && !flipped && !clicked)
+            {
+                pageflipSource.Play();
+            }
+
     }
     private void Flipping()
     {
@@ -87,11 +100,13 @@ public class PageFlip : MonoBehaviour
                 {
                     pos = touch.position - startPos;
                     frame += (-pos.x) / sensitivity;
+
                     anim.Play("IFlip", 0, frame);
                     if (nextPageAnimator != null)
                         nextPageAnimator.Play("IOpen", 0, frame);
                     if (prevPageAnimator != null)
                         prevPageAnimator.Play("IClose", 0, frame);
+
                 }
             }
         }
@@ -105,7 +120,6 @@ public class PageFlip : MonoBehaviour
             {
                 frame -= 0.01f;
             }
-
             //if (hit.collider.name == GameEventManager.selectedPage)
             //{
                 anim.Play("IFlip", 0, frame);
@@ -119,6 +133,7 @@ public class PageFlip : MonoBehaviour
             clicked = false;
         }
         #endregion
+
 
         #region Limit Flip
         if (frame >= 0.999 || frame <= 0.001)
@@ -141,6 +156,7 @@ public class PageFlip : MonoBehaviour
 
         #endregion
     }
+
 
     // BUGS I FOUND
     /* - When flipping the other way, it will instantly snap to the end, probably due to how it is coded in positional based, rather than like an additive type of way. I'm not sure why it won't let me but

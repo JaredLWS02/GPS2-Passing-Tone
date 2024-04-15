@@ -30,7 +30,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float rayDistance;
     [SerializeField] private LayerMask groundLayer;
     [SerializeField] private GameObject playerCamera;
-    [SerializeField] private List<AudioClip> walkingClip;
+    [SerializeField] public List<AudioClip> walkingClip;
     [SerializeField] private AudioSource walkingAudioSource;
     [SerializeField] private List<Transform> npc;
     [SerializeField] private List<GameObject> Sprite;
@@ -62,6 +62,10 @@ public class PlayerMovement : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if(PauseMenu.GameIsPaused)
+        {
+            return;
+        }
         if (isRotate || GameEventManager.isTouchPage || GameEventManager.isPuzzling)
         {
             //if(GameEventManager.isTouchPage)

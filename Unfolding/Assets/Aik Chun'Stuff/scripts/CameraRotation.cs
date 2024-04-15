@@ -21,12 +21,14 @@ public class CameraRotation : MonoBehaviour
 
     [Header("Assign objects other that player that you want to rotate")]
     [SerializeField] private List<GameObject> thingsToRotate = new List<GameObject>();
+    [SerializeField] private GameObject guiderotation;
 
     // Start is called before the first frame update
     void Start()
     {
         startRotation = transform.eulerAngles.y;
         startRot = true;
+        guiderotation.SetActive(true);
     }
 
     private void Update()
@@ -35,7 +37,11 @@ public class CameraRotation : MonoBehaviour
     }
     private void LateUpdate()
     {
-        if(!GameEventManager.isTouchObject && !GameEventManager.isTouchPage && !GameEventManager.isPuzzling)
+        if (PauseMenu.GameIsPaused)
+        {
+            return;
+        }
+        if (!GameEventManager.isTouchObject && !GameEventManager.isTouchPage && !GameEventManager.isPuzzling)
         {
             if (!isRotating && !pm.isMoving)
             {
@@ -68,6 +74,8 @@ public class CameraRotation : MonoBehaviour
                                 {
                                     StartCoroutine(RotateCamLeft());
                                 }
+                                guiderotation.SetActive(false);
+
                             }
 
                         }

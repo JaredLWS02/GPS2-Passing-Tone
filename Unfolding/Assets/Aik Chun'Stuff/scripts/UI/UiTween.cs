@@ -39,6 +39,11 @@ public class UiTween : MonoBehaviour
     [SerializeField] private Image panel;
     [SerializeField] private float blackenSpeed;
 
+    [Header("Credit Ui")]
+    [SerializeField] private GameObject Credits;
+    [SerializeField] private float credittime;
+
+
     public bool playUI;
 
     // Start is called before the first frame update
@@ -155,5 +160,14 @@ public class UiTween : MonoBehaviour
         LeanTween.scale(SfxSlider, Vector3.one, optionSpeed).setDelay(buttonSpeed /2).setEase(Settingstype);
     }
 
+    #endregion
+
+
+    #region creditsTween
+
+    public void TweenCredit()
+    {
+        LeanTween.moveLocalY(Credits, 770, credittime);
+    }
     #endregion
 }

@@ -12,6 +12,7 @@ public class TangramTrigger : MonoBehaviour
     public NavMeshAgent player;
     public Mesh fixedboat;
     public GameObject boat;
+    public AudioSource completion;
 
 
     private bool puzzleComplete = false;
@@ -60,6 +61,7 @@ public class TangramTrigger : MonoBehaviour
             tangramCanvas.gameObject.SetActive(false);
             cutsceenTrigger.SetActive(true);
             boat.GetComponent<MeshFilter>().mesh = fixedboat;
+            completion.Play();
             Debug.Log("Tangram canvas disabled.");
         }
     

@@ -45,9 +45,15 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: UI
+    uniqueID: 265302543
+    locked: 0
   - name: Beaver
     uniqueID: 3087738753
     locked: 0
   - name: Frog
     uniqueID: 1297641401
+    locked: 0
+  - name: UiDiamond
+    uniqueID: 2472246867
     locked: 0

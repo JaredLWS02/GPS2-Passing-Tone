@@ -21,6 +21,10 @@ public class PageHandler : MonoBehaviour
 
     public void Update()
     {
+        if (PauseMenu.GameIsPaused)
+        {
+            return;
+        }
         // Do raycast to selected page to select which page
         if (Input.GetMouseButtonDown(0))
         {
