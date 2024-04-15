@@ -22,7 +22,7 @@ public class SwipeDetectionTestNew : MonoBehaviour
 
     private GameObject gameObjectHit;
 
-    private float mindist = 250;
+    private float mindist = 200;
 
     private void Update()
     {
