@@ -22,6 +22,8 @@ public class SwipeDetectionTestNew : MonoBehaviour
 
     private GameObject gameObjectHit;
 
+    private float mindist = 200;
+
     private void Update()
     {
         if (PauseMenu.GameIsPaused)
@@ -52,16 +54,18 @@ public class SwipeDetectionTestNew : MonoBehaviour
         {
             endPos = Input.touches[0].position;
             direction = startPos - endPos;
+            float swipeddistX = endPos.x - startPos.x;
+            float swipeddistY = endPos.y - startPos.y;
 
             if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y)) //For Left and Right detection
             {
-                if (direction.x > 0 && hit.collider.gameObject == this.gameObject)
+                if (direction.x > 0 && hit.collider.gameObject == this.gameObject && swipeddistX > mindist)
                 {
                     Debug.Log("Left");
                     if (swipedLeft != null)
                         swipedLeft.Invoke();
                 }
-                else if (direction.x < 0 && hit.collider.gameObject == this.gameObject)
+                else if (direction.x < 0 && hit.collider.gameObject == this.gameObject && swipeddistX < -mindist)
                 {
                     Debug.Log("Right");
                     if (swipedRight != null)
@@ -71,13 +75,13 @@ public class SwipeDetectionTestNew : MonoBehaviour
             }
             else if (Mathf.Abs(direction.x) < Mathf.Abs(direction.y)) //For Up and Down
             {
-                if (direction.y < 0 && hit.collider.gameObject == this.gameObject)
+                if (direction.y < 0 && hit.collider.gameObject == this.gameObject &&  swipeddistY > mindist)
                 {
                     Debug.Log("Up");
                     if (swipedUp != null)
                         swipedUp.Invoke();
                 }
-                else if (direction.y > 0 && hit.collider.gameObject == this.gameObject)
+                else if (direction.y > 0 && hit.collider.gameObject == this.gameObject && swipeddistY < -mindist)
                 {
                     Debug.Log("Down");
                     if (swipedDown != null)
@@ -88,67 +92,67 @@ public class SwipeDetectionTestNew : MonoBehaviour
             GameEventManager.isTouchObject = false;
         }
 
-        #region Mouse Input
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            if (Physics.Raycast(ray, out hit))
-            {
-                if (hit.collider.tag == "Puzzle")
-                {
-                    startPos = Input.mousePosition;
-                    clicked = true;
-                    //GameEventManager.isTouchObject = true;
+        //#region Mouse Input
+        //if (Input.GetKeyDown(KeyCode.Mouse0))
+        //{
+        //    ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+        //    if (Physics.Raycast(ray, out hit))
+        //    {
+        //        if (hit.collider.tag == "Puzzle")
+        //        {
+        //            startPos = Input.mousePosition;
+        //            clicked = true;
+        //            //GameEventManager.isTouchObject = true;
 
-                }
-            }
-        }
+        //        }
+        //    }
+        //}
 
-        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Moved && clicked)
-        {
-            GameEventManager.isTouchObject = true;
-        }
+        //if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Moved && clicked)
+        //{
+        //    GameEventManager.isTouchObject = true;
+        //}
 
-        if (Input.GetKeyUp(KeyCode.Mouse0) && Physics.Raycast(ray, out hit))
-        {
-            endPos = Input.mousePosition;
-            direction = startPos - endPos;
+        //if (Input.GetKeyUp(KeyCode.Mouse0) && Physics.Raycast(ray, out hit))
+        //{
+        //    endPos = Input.mousePosition;
+        //    direction = startPos - endPos;
 
-            if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y)) //For Left and Right detection
-            {
-                if (direction.x > 0 && hit.collider.gameObject == this.gameObject)
-                {
-                    Debug.Log("Left");
-                    if (swipedLeft != null)
-                        swipedLeft.Invoke();
-                }
-                else if (direction.x < 0 && hit.collider.gameObject == this.gameObject)
-                {
-                    Debug.Log("Right");
-                    if (swipedRight != null)
-                        swipedRight.Invoke();
-                }
+        //    if (Mathf.Abs(direction.x) > Mathf.Abs(direction.y)) //For Left and Right detection
+        //    {
+        //        if (direction.x > 0 && hit.collider.gameObject == this.gameObject)
+        //        {
+        //            Debug.Log("Left");
+        //            if (swipedLeft != null)
+        //                swipedLeft.Invoke();
+        //        }
+        //        else if (direction.x < 0 && hit.collider.gameObject == this.gameObject)
+        //        {
+        //            Debug.Log("Right");
+        //            if (swipedRight != null)
+        //                swipedRight.Invoke();
+        //        }
 
-            }
-            else if (Mathf.Abs(direction.x) < Mathf.Abs(direction.y)) //For Up and Down
-            {
-                if (direction.y < 0 && hit.collider.gameObject == this.gameObject)
-                {
-                    Debug.Log("Up");
-                    if (swipedUp != null)
-                        swipedUp.Invoke();
-                }
-                else if (direction.y > 0 && hit.collider.gameObject == this.gameObject)
-                {
-                    Debug.Log("Down");
-                    if (swipedDown != null)
-                        swipedDown.Invoke();
-                }
-            }
-            clicked = false;
-            GameEventManager.isTouchObject = false;
-        }
-        #endregion
+        //    }
+        //    else if (Mathf.Abs(direction.x) < Mathf.Abs(direction.y)) //For Up and Down
+        //    {
+        //        if (direction.y < 0 && hit.collider.gameObject == this.gameObject)
+        //        {
+        //            Debug.Log("Up");
+        //            if (swipedUp != null)
+        //                swipedUp.Invoke();
+        //        }
+        //        else if (direction.y > 0 && hit.collider.gameObject == this.gameObject)
+        //        {
+        //            Debug.Log("Down");
+        //            if (swipedDown != null)
+        //                swipedDown.Invoke();
+        //        }
+        //    }
+        //    clicked = false;
+        //    GameEventManager.isTouchObject = false;
+        //}
+        //#endregion
     }
 
     public void ColourChange()

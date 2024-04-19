@@ -18,7 +18,7 @@ public class Dialogue : MonoBehaviour
     //writing speed
     public float writingSpeed;
     // Sound effect
-    public AudioClip dialogueSound;
+    public AudioSource dialogueSound;
     // Sound effect for dialogue trigger
     public AudioClip triggerSound;
     
@@ -88,13 +88,19 @@ public class Dialogue : MonoBehaviour
     private void GetDialogue(int i) //
     {
             index = i; //start index at zero
-        if(inDialogue)
+        if (dialogueSound != null && !dialogueSound.isPlaying)
         {
+            dialogueSound.Play();
+        }
+        if (inDialogue)
+        {
+            StopCoroutine(Writing());
             StartCoroutine(SkipWriting());
         }
         else
         {
             charIndex = 0; //Reset the character index
+            StopCoroutine(SkipWriting());
             StartCoroutine(Writing()); //Start writing
         dialogueText.text = string.Empty; //clear the dialogue component text
         }
@@ -132,11 +138,7 @@ public class Dialogue : MonoBehaviour
         dialogueText.text += currentDialogue[charIndex]; //Write the character
         charIndex++; //increase the character index 
 
-        if (dialogueSound != null)
-        {
-            AudioSource.PlayClipAtPoint(dialogueSound, transform.position);
-        }
-
+        inDialogue = true;
 
         //make sure you have reached the end of the sentence
         if (charIndex <= currentDialogue.Length - 1)
@@ -148,12 +150,12 @@ public class Dialogue : MonoBehaviour
             }
             yield return new WaitForSeconds(writingSpeed);
 
-            inDialogue = true;
             //restart same process
             StartCoroutine(Writing());
         }
         else
         {
+            dialogueSound.Stop();
             inDialogue = false;
             waitForNext = true; //End this sentence and wait for the next one
         }
@@ -171,13 +173,11 @@ public class Dialogue : MonoBehaviour
         {
             dialogueText.text += currentDialogue[charIndex]; //Write the character
             charIndex++; //increase the character index 
-            if (dialogueSound != null)
-            {
-                AudioSource.PlayClipAtPoint(dialogueSound, transform.position);
-            }
             yield return null;
         }
+        dialogueSound.Stop();
         inDialogue = false;
+        yield return new WaitForSeconds(writingSpeed);
         waitForNext = true;
 
     }
@@ -201,6 +201,7 @@ public class Dialogue : MonoBehaviour
             {
                 //ifso fetch the next dialogue
                 GetDialogue(index);
+
             }
             else
             {
