@@ -3,7 +3,11 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Puzzle
+  - Obstacles
+  - Edge
+  - cutScene
   layers:
   - Default
   - TransparentFX
@@ -11,8 +15,8 @@ TagManager:
   - 
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Ground
   - 
   - 
   - 
@@ -40,4 +44,16 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: UI
+    uniqueID: 265302543
+    locked: 0
+  - name: Beaver
+    uniqueID: 3087738753
+    locked: 0
+  - name: Frog
+    uniqueID: 1297641401
+    locked: 0
+  - name: UiDiamond
+    uniqueID: 2472246867
     locked: 0

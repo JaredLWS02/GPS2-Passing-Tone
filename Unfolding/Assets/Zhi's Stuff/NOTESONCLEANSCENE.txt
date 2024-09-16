@@ -1,0 +1,9 @@
+You'll receive an error on play, one from android (assuming you are using the simulator)
+
+The rotateble bridge requires a sprite renderer which is deleted so you'll get errors from that.
+
+Main Menu is in here but you will start off right off the bat playing the game.
+
+
+Note* 	If you see animator inactive, ignore the message due to saving resources.
+	If you want to start on the other pages, ummmmm good luck? Cause of how Unity animator deals with animations, 	you can't play in mid game.

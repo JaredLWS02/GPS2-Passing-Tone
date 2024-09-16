@@ -4,7 +4,40 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 0
+    path: Assets/Scenes/James/REAL POC DUPLICATE.unity
+    guid: 5d85ebfdd26e4ac49aa943880f55ebac
+  - enabled: 0
+    path: Assets/Scenes/POC Scene.unity
+    guid: 1f981bf1302d69340811bd795492f6f0
+  - enabled: 0
+    path: Assets/Aik Chun'Stuff/Old Stuff/nyak Stage Scene.unity
+    guid: 2b31f46a93f4dfa4d94652ed3f3ba234
+  - enabled: 0
+    path: Assets/Zhi's Stuff/Zhi Testing book.unity
+    guid: 53de1d4d0c48fda43b39987c65eede95
+  - enabled: 0
+    path: Assets/Scenes/James/Testis.unity
+    guid: a6f62957ec1d209458866281a0253c0e
+  - enabled: 0
+    path: Assets/Zhi's Stuff/Zhi Testing Stff.unity
+    guid: 78a6b48547deedb47b6026745c2c6b62
+  - enabled: 0
+    path: Assets/Aik Chun'Stuff/nyak Scene.unity
+    guid: 4f545181eb00beb42b4c889d2fd720fa
+  - enabled: 0
+    path: Assets/Aik Chun'Stuff/Nyak Test Scene (With UI).unity
+    guid: 6232998824376b1418debd274a2bb50c
+  - enabled: 1
+    path: Assets/Zhi's Stuff/MainScene.unity
+    guid: ead91101da737bc469f494ccd9a4cbb8
   m_configObjects:
+    com.unity.adaptiveperformance.google.android.provider_settings: {fileID: 11400000,
+      guid: 11683e145c3c37c42a13d8bf8b6695c3, type: 2}
+    com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: e85de4fa3de9c9a4397ecf692152d7f9,
+      type: 2}
+    com.unity.adaptiveperformance.samsung.android.provider_settings: {fileID: 11400000,
+      guid: 3632c932c6e951448abedeeb7647e327, type: 2}
     com.unity.adaptiveperformance.simulator.provider_settings: {fileID: 11400000,
       guid: 5e14ad4f6f1e28e4fa36c50155d6666a, type: 2}
